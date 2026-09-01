@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Allahdi Baba - Tableau de bord vendeur</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">Allahdi<span>Baba</span></div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Rechercher un produit...">
+    <button onclick="applyFilters()">Rechercher</button>
+  </div>
+  <nav>
+    <a href="feed.html">Boutiques</a>
+    <a href="dashboard-seller.html">Vendre</a>
+    <a href="cart.html">Panier</a>
+    <a href="login.html">Connexion</a>
+    <a href="#" class="download-btn">Télécharger l'appli</a>
+  </nav>
+</header>
+
+
+<div class="dashboard">
+  <div class="sidebar">
+    <h3 style="color:#F5B041;">Espace vendeur</h3>
+    <a href="#">Vue d'ensemble</a>
+    <a href="#">Mes produits</a>
+    <a href="#">Publier un produit</a>
+    <a href="#">Commissions</a>
+    <a href="#">Parrainage</a>
+    <a href="chat.html">Messages</a>
+  </div>
+  <div>
+    <div class="stats">
+      <div class="stat-card"><div>Produits vendus</div><div class="value" id="statSold"></div></div>
+      <div class="stat-card"><div>Commissions générées (2,5 %)</div><div class="value" id="statCommission"></div></div>
+      <div class="stat-card"><div>Revenus nets</div><div class="value" id="statNet"></div></div>
+      <div class="stat-card"><div>Filleuls (parrainage)</div><div class="value">12</div></div>
+    </div>
+
+    <div style="padding:0 20px 20px;">
+      <h3>Publier un nouveau produit</h3>
+      <div style="background:white;padding:20px;border-radius:10px;max-width:500px;">
+        <input type="text" id="newProductName" placeholder="Nom du produit" style="width:100%;padding:8px;margin-bottom:8px;">
+        <input type="number" id="newProductPrice" placeholder="Prix ($)" style="width:100%;padding:8px;margin-bottom:8px;">
+        <input type="number" id="newProductMinQty" placeholder="Quantité minimum" style="width:100%;padding:8px;margin-bottom:8px;">
+        <button class="btn-primary" onclick="publishProduct()">Publier et générer le lien</button>
+        <p id="publishResult" style="font-size:13px;color:#888;margin-top:10px;"></p>
+      </div>
+    </div>
+
+    <div style="padding:0 20px 20px;">
+      <h3>Historique des ventes</h3>
+      <table>
+        <thead><tr><th>Produit</th><th>Quantité</th><th>Montant</th><th>Commission</th><th>Net perçu</th></tr></thead>
+        <tbody>
+          <tr><td>Montre connectée sport</td><td>3</td><td>74,97 $</td><td>1,87 $</td><td>73,10 $</td></tr>
+          <tr><td>Casque audio sans fil</td><td>10</td><td>159,00 $</td><td>3,98 $</td><td>155,02 $</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<footer>Allahdi Baba - Application inspirée du modèle Alibaba</footer>
+
+<script src="../js/data.js"></script>
+<script>
+const soldTotal = 13;
+const revenue = 233.97;
+const commission = revenue * 0.025;
+document.getElementById('statSold').textContent = soldTotal;
+document.getElementById('statCommission').textContent = formatPrice(commission);
+document.getElementById('statNet').textContent = formatPrice(revenue - commission);
+
+function publishProduct() {
+  const name = document.getElementById('newProductName').value;
+  const price = document.getElementById('newProductPrice').value;
+  if (!name || !price) {
+    alert('Merci de renseigner au moins le nom et le prix.');
+    return;
+  }
+  const link = window.location.origin + '/product.html?id=' + Math.floor(Math.random()*10000);
+  document.getElementById('publishResult').innerHTML = 'Produit publié. Lien à partager : <br><a href="' + link + '">' + link + '</a>';
+}
+</script>
+</body>
+</html>

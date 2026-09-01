@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Allahdi Baba - Accueil</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">Allahdi<span>Baba</span></div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Rechercher un produit...">
+    <button onclick="applyFilters()">Rechercher</button>
+  </div>
+  <nav>
+    <a href="feed.html">Boutiques</a>
+    <a href="dashboard-seller.html">Vendre</a>
+    <a href="cart.html">Panier</a>
+    <a href="login.html">Connexion</a>
+    <a href="#" class="download-btn">Télécharger l'appli</a>
+  </nav>
+</header>
+
+
+<div class="filters">
+  <select id="filterCountry" onchange="applyFilters()">
+    <option value="">Pays du vendeur</option>
+  </select>
+  <select id="filterRating" onchange="applyFilters()">
+    <option value="">Note du vendeur</option>
+    <option value="4">4 étoiles et plus</option>
+    <option value="4.5">4,5 étoiles et plus</option>
+  </select>
+  <input type="number" id="filterMinQty" placeholder="Quantité minimum" onchange="applyFilters()">
+  <input type="number" id="filterMaxPrice" placeholder="Prix maximum" onchange="applyFilters()">
+</div>
+
+<div class="product-grid" id="productGrid"></div>
+
+<footer>Allahdi Baba - Application inspirée du modèle Alibaba</footer>
+
+<script src="../js/data.js"></script>
+<script>
+function populateCountryFilter() {
+  const select = document.getElementById('filterCountry');
+  const countries = [...new Set(PRODUCTS.map(p => p.country))];
+  countries.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = c;
+    select.appendChild(opt);
+  });
+}
+
+function renderProducts(list) {
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = '';
+  if (list.length === 0) {
+    grid.innerHTML = '<p style="padding:20px;color:#888;">Aucun produit ne correspond à ces critères.</p>';
+    return;
+  }
+  list.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+      <img src="" alt="${p.name}">
+      <div class="info">
+        <span class="badge">${p.seller}</span>
+        <h3>${p.name}</h3>
+        <div class="price">${formatPrice(p.price)}</div>
+        <div class="rating">${renderStars(p.rating)} (${p.rating})</div>
+        <p style="font-size:13px;color:#888;">Pays : ${p.country} - Qté min : ${p.minQty}</p>
+        <button class="btn-primary" onclick="location.href='product.html?id=${p.id}'">Voir le produit</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// Le flux affiche automatiquement tous les produits, et se filtre
+// en combinant recherche texte + pays + note + quantité min + prix max
+function applyFilters() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const country = document.getElementById('filterCountry').value;
+  const rating = parseFloat(document.getElementById('filterRating').value) || 0;
+  const minQty = parseFloat(document.getElementById('filterMinQty').value) || 0;
+  const maxPrice = parseFloat(document.getElementById('filterMaxPrice').value) || Infinity;
+
+  const filtered = PRODUCTS.filter(p =>
+    p.name.toLowerCase().includes(search) &&
+    (country === '' || p.country === country) &&
+    p.rating >= rating &&
+    p.minQty >= minQty &&
+    p.price <= maxPrice
+  );
+
+  renderProducts(filtered);
+}
+
+populateCountryFilter();
+renderProducts(PRODUCTS); // Tous les produits s'affichent automatiquement, même sans recherche
+document.getElementById('searchInput').addEventListener('input', applyFilters);
+</script>
+</body>
+</html>

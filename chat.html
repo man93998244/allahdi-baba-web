@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Allahdi Baba - Messagerie</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">Allahdi<span>Baba</span></div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Rechercher un produit...">
+    <button onclick="applyFilters()">Rechercher</button>
+  </div>
+  <nav>
+    <a href="feed.html">Boutiques</a>
+    <a href="dashboard-seller.html">Vendre</a>
+    <a href="cart.html">Panier</a>
+    <a href="login.html">Connexion</a>
+    <a href="#" class="download-btn">Télécharger l'appli</a>
+  </nav>
+</header>
+
+
+<div class="chat-box">
+  <div style="background:#E67E22;color:white;padding:12px;">Négociation avec le vendeur</div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="msg seller">Bonjour, comment puis-je vous aider ?</div>
+    <div class="msg buyer">Bonjour, est-ce possible d'avoir un meilleur prix pour une grande quantité ?</div>
+    <div class="msg seller">Oui, à partir de 50 unités je peux faire -10 %.</div>
+  </div>
+  <div class="chat-input">
+    <input type="text" id="chatInput" placeholder="Écrire un message...">
+    <button onclick="sendMessage()">Envoyer</button>
+  </div>
+</div>
+
+<footer>Allahdi Baba - Application inspirée du modèle Alibaba</footer>
+
+<script>
+function sendMessage() {
+  const input = document.getElementById('chatInput');
+  if (!input.value.trim()) return;
+  const messages = document.getElementById('chatMessages');
+  const msg = document.createElement('div');
+  msg.className = 'msg buyer';
+  msg.textContent = input.value;
+  messages.appendChild(msg);
+  input.value = '';
+  messages.scrollTop = messages.scrollHeight;
+}
+document.getElementById('chatInput').addEventListener('keypress', e => {
+  if (e.key === 'Enter') sendMessage();
+});
+</script>
+</body>
+</html>

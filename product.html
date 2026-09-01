@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Allahdi Baba - Produit</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">Allahdi<span>Baba</span></div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Rechercher un produit...">
+    <button onclick="applyFilters()">Rechercher</button>
+  </div>
+  <nav>
+    <a href="feed.html">Boutiques</a>
+    <a href="dashboard-seller.html">Vendre</a>
+    <a href="cart.html">Panier</a>
+    <a href="login.html">Connexion</a>
+    <a href="#" class="download-btn">Télécharger l'appli</a>
+  </nav>
+</header>
+
+
+<div style="max-width:900px;margin:30px auto;background:white;padding:30px;border-radius:10px;display:flex;gap:30px;flex-wrap:wrap;">
+  <img src="" style="width:280px;height:280px;background:#eee;border-radius:8px;">
+  <div style="flex:1;min-width:250px;">
+    <h2 id="pName"></h2>
+    <div class="rating" id="pRating"></div>
+    <p class="price" id="pPrice" style="font-size:26px;"></p>
+    <p id="pSeller" style="color:#888;"></p>
+    <p id="pCountryQty" style="color:#888;font-size:14px;"></p>
+
+    <label>Quantité :</label>
+    <input type="number" id="qty" value="1" min="1" style="width:80px;padding:6px;margin:10px 0;">
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn-primary" onclick="addToCart()">Ajouter au panier</button>
+      <button class="btn-primary" style="background:#2C3E50;" onclick="location.href='chat.html'">Négocier avec le vendeur</button>
+    </div>
+
+    <div style="margin-top:20px;padding:15px;background:#FDF3E7;border-radius:8px;font-size:14px;">
+      Paiement sécurisé : votre argent reste bloqué par la plateforme jusqu'à confirmation de réception de la commande.
+    </div>
+  </div>
+</div>
+
+<div style="max-width:900px;margin:0 auto 30px;background:white;padding:20px;border-radius:10px;">
+  <h3>Avis clients</h3>
+  <p>★★★★★ "Produit conforme, livraison rapide." - Client vérifié</p>
+  <p>★★★★☆ "Bon rapport qualité prix." - Client vérifié</p>
+</div>
+
+<footer>Allahdi Baba - Application inspirée du modèle Alibaba</footer>
+
+<script src="../js/data.js"></script>
+<script>
+const params = new URLSearchParams(window.location.search);
+const id = parseInt(params.get('id')) || PRODUCTS[0].id;
+const product = PRODUCTS.find(p => p.id === id) || PRODUCTS[0];
+
+document.getElementById('pName').textContent = product.name;
+document.getElementById('pRating').textContent = renderStars(product.rating) + ' (' + product.rating + ')';
+document.getElementById('pPrice').textContent = formatPrice(product.price);
+document.getElementById('pSeller').innerHTML = 'Vendu par <a href="shop.html?seller=' + encodeURIComponent(product.seller) + '">' + product.seller + '</a>';
+document.getElementById('pCountryQty').textContent = 'Pays : ' + product.country + ' - Quantité minimum : ' + product.minQty;
+document.getElementById('qty').value = product.minQty;
+document.getElementById('qty').min = product.minQty;
+
+function addToCart() {
+  const qty = parseInt(document.getElementById('qty').value) || product.minQty;
+  const cart = JSON.parse(localStorage.getItem('ab_cart') || '[]');
+  cart.push({ id: product.id, name: product.name, price: product.price, qty });
+  localStorage.setItem('ab_cart', JSON.stringify(cart));
+  alert('Ajouté au panier : ' + qty + ' x ' + product.name);
+  window.location.href = 'cart.html';
+}
+</script>
+</body>
+</html>

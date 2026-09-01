@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Allahdi Baba - Boutique</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">Allahdi<span>Baba</span></div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Rechercher un produit...">
+    <button onclick="applyFilters()">Rechercher</button>
+  </div>
+  <nav>
+    <a href="feed.html">Boutiques</a>
+    <a href="dashboard-seller.html">Vendre</a>
+    <a href="cart.html">Panier</a>
+    <a href="login.html">Connexion</a>
+    <a href="#" class="download-btn">Télécharger l'appli</a>
+  </nav>
+</header>
+
+
+<div class="shop-header">
+  <img src="" alt="Logo boutique">
+  <div>
+    <h2 id="shopName">Boutique</h2>
+    <div class="rating" id="shopRating"></div>
+    <p style="color:#888;" id="shopCountry"></p>
+  </div>
+  <button class="btn-primary" style="margin-left:auto;" onclick="location.href='chat.html'">Contacter le vendeur</button>
+</div>
+
+<div class="product-grid" id="shopProducts"></div>
+
+<footer>Allahdi Baba - Application inspirée du modèle Alibaba</footer>
+
+<script src="../js/data.js"></script>
+<script>
+const params = new URLSearchParams(window.location.search);
+const seller = params.get('seller') || (PRODUCTS[0] && PRODUCTS[0].seller);
+const products = PRODUCTS.filter(p => p.seller === seller);
+
+document.getElementById('shopName').textContent = seller;
+if (products.length) {
+  const avgRating = (products.reduce((a,p) => a + p.rating, 0) / products.length).toFixed(1);
+  document.getElementById('shopRating').textContent = renderStars(avgRating) + ' (' + avgRating + ')';
+  document.getElementById('shopCountry').textContent = 'Pays : ' + products[0].country;
+}
+
+const grid = document.getElementById('shopProducts');
+products.forEach(p => {
+  const card = document.createElement('div');
+  card.className = 'product-card';
+  card.innerHTML = `
+    <img src="" alt="${p.name}">
+    <div class="info">
+      <h3>${p.name}</h3>
+      <div class="price">${formatPrice(p.price)}</div>
+      <div class="rating">${renderStars(p.rating)} (${p.rating})</div>
+      <button class="btn-primary" onclick="location.href='product.html?id=${p.id}'">Voir le produit</button>
+    </div>
+  `;
+  grid.appendChild(card);
+});
+</script>
+</body>
+</html>

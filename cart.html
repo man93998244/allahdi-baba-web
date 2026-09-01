@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Allahdi Baba - Panier</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">Allahdi<span>Baba</span></div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Rechercher un produit...">
+    <button onclick="applyFilters()">Rechercher</button>
+  </div>
+  <nav>
+    <a href="feed.html">Boutiques</a>
+    <a href="dashboard-seller.html">Vendre</a>
+    <a href="cart.html">Panier</a>
+    <a href="login.html">Connexion</a>
+    <a href="#" class="download-btn">Télécharger l'appli</a>
+  </nav>
+</header>
+
+
+<div style="max-width:700px;margin:30px auto;background:white;padding:30px;border-radius:10px;">
+  <h2>Mon panier</h2>
+  <table id="cartTable">
+    <thead>
+      <tr><th>Produit</th><th>Quantité</th><th>Prix unitaire</th><th>Total</th></tr>
+    </thead>
+    <tbody id="cartBody"></tbody>
+  </table>
+
+  <div style="margin-top:20px;text-align:right;">
+    <p>Sous-total : <span id="subtotal"></span></p>
+    <p style="font-size:13px;color:#888;">Commission plateforme (2,5 %) : <span id="commission"></span></p>
+    <p style="font-size:20px;font-weight:bold;color:#D35400;">Total à payer : <span id="total"></span></p>
+    <button class="btn-primary" onclick="pay()">Payer maintenant</button>
+  </div>
+</div>
+
+<div id="receiptBox" style="display:none;max-width:700px;margin:0 auto 30px;background:white;padding:30px;border-radius:10px;border-top:4px solid #E67E22;">
+  <h3>Reçu de paiement</h3>
+  <p id="receiptContent"></p>
+</div>
+
+<footer>Allahdi Baba - Application inspirée du modèle Alibaba</footer>
+
+<script src="../js/data.js"></script>
+<script>
+const cart = JSON.parse(localStorage.getItem('ab_cart') || '[]');
+const body = document.getElementById('cartBody');
+let subtotal = 0;
+
+if (cart.length === 0) {
+  body.innerHTML = '<tr><td colspan="4">Votre panier est vide.</td></tr>';
+} else {
+  cart.forEach(item => {
+    const lineTotal = item.price * item.qty;
+    subtotal += lineTotal;
+    const row = document.createElement('tr');
+    row.innerHTML = `<td>${item.name}</td><td>${item.qty}</td><td>${formatPrice(item.price)}</td><td>${formatPrice(lineTotal)}</td>`;
+    body.appendChild(row);
+  });
+}
+
+const commission = subtotal * 0.025;
+const total = subtotal + commission; // commission affichée en supplément, prélevée côté vendeur à la vente
+
+document.getElementById('subtotal').textContent = formatPrice(subtotal);
+document.getElementById('commission').textContent = formatPrice(commission);
+document.getElementById('total').textContent = formatPrice(total);
+
+function pay() {
+  if (cart.length === 0) {
+    alert('Votre panier est vide.');
+    return;
+  }
+  // Simulation : l'argent est bloqué par la plateforme jusqu'à confirmation de réception
+  const receiptBox = document.getElementById('receiptBox');
+  const now = new Date().toLocaleString('fr-FR');
+  document.getElementById('receiptContent').innerHTML = `
+    Date : ${now}<br>
+    Articles : ${cart.length}<br>
+    Sous-total : ${formatPrice(subtotal)}<br>
+    Commission plateforme (2,5 %) : ${formatPrice(commission)}<br>
+    Total payé : ${formatPrice(total)}<br><br>
+    Statut : paiement reçu, fonds bloqués par la plateforme jusqu'à confirmation de réception de la commande par l'acheteur.
+  `;
+  receiptBox.style.display = 'block';
+  localStorage.setItem('ab_cart', '[]');
+}
+</script>
+</body>
+</html>

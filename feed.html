@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Allahdi Baba - Boutiques</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">Allahdi<span>Baba</span></div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Rechercher un produit...">
+    <button onclick="applyFilters()">Rechercher</button>
+  </div>
+  <nav>
+    <a href="feed.html">Boutiques</a>
+    <a href="dashboard-seller.html">Vendre</a>
+    <a href="cart.html">Panier</a>
+    <a href="login.html">Connexion</a>
+    <a href="#" class="download-btn">Télécharger l'appli</a>
+  </nav>
+</header>
+
+
+<div style="padding:30px;">
+  <h2>Boutiques des vendeurs</h2>
+  <div class="product-grid" id="shopGrid"></div>
+</div>
+
+<footer>Allahdi Baba - Application inspirée du modèle Alibaba</footer>
+
+<script src="../js/data.js"></script>
+<script>
+function renderShops() {
+  const sellers = [...new Set(PRODUCTS.map(p => p.seller))];
+  const grid = document.getElementById('shopGrid');
+  sellers.forEach(seller => {
+    const products = PRODUCTS.filter(p => p.seller === seller);
+    const avgRating = (products.reduce((a,p) => a + p.rating, 0) / products.length).toFixed(1);
+    const country = products[0].country;
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+      <div class="info">
+        <h3>${seller}</h3>
+        <div class="rating">${renderStars(avgRating)} (${avgRating})</div>
+        <p style="font-size:13px;color:#888;">Pays : ${country} - ${products.length} produit(s)</p>
+        <button class="btn-primary" onclick="location.href='shop.html?seller=${encodeURIComponent(seller)}'">Voir la boutique</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+renderShops();
+</script>
+</body>
+</html>
