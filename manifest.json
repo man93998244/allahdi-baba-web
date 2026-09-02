@@ -8,5 +8,17 @@
   "short_name": "AllahdiBaba",
   "start_url": "/",
   "theme_color": "#ffffff",
-  "description": "Application e-commerce AllahdiBaba - vêtements, chaussures et accessoires"
+  "description": "Application e-commerce AllahdiBaba - vêtements, chaussures et accessoires",
+  "icons": [
+    {
+      "src": "icone-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icone-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
