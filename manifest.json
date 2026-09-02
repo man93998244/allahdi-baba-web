@@ -1,0 +1,12 @@
+{
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "AllahdiBaba",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "AllahdiBaba",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "description": "Application e-commerce inspirée d'Alibaba"
+}
