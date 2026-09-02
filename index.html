@@ -66,7 +66,7 @@ function renderProducts(list) {
     const card = document.createElement('div');
     card.className = 'product-card';
     card.innerHTML = `
-      <img src="" alt="${p.name}">
+      <img src="${p.img}" alt="${p.name}">
       <div class="info">
         <span class="badge">${p.seller}</span>
         <h3>${p.name}</h3>
@@ -80,8 +80,6 @@ function renderProducts(list) {
   });
 }
 
-// Le flux affiche automatiquement tous les produits, et se filtre
-// en combinant recherche texte + pays + note + quantité min + prix max
 function applyFilters() {
   const search = document.getElementById('searchInput').value.toLowerCase();
   const country = document.getElementById('filterCountry').value;
@@ -101,7 +99,7 @@ function applyFilters() {
 }
 
 populateCountryFilter();
-renderProducts(PRODUCTS); // Tous les produits s'affichent automatiquement, même sans recherche
+renderProducts(PRODUCTS);
 document.getElementById('searchInput').addEventListener('input', applyFilters);
 </script>
 </body>
